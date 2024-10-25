@@ -14,7 +14,10 @@ class CategoriesController extends Controller
     {
         $categoryModel = Category::findById((int) $category);
 
-        $tracks = Track::where('category_id', (int) $category)->paginate(10);
+        $tracks = Track::where('category_id', $categoryModel->id)
+            ->withCount('likes')
+            ->orderBy('likes_count', 'desc')
+            ->paginate(10);
 
         return view('app.categories.show', [
             'category' => $categoryModel,
