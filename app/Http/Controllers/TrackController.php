@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Week;
 use App\Models\Track;
 use App\Players\Player;
@@ -38,6 +39,7 @@ class TrackController extends Controller
         return view('app.tracks.create', [
             'week' => Week::current(),
             'remaining_tracks_count' => $user->remainingTracksCount(),
+            'categories' => Category::getAllCategories(),
         ]);
     }
 
@@ -48,31 +50,36 @@ class TrackController extends Controller
     {
         $this->authorize('create', Track::class);
 
+        // Validation des données de la requête
         $validated = $request->validate([
             'title' => ['required', 'string', 'max:255'],
             'artist' => ['required', 'string', 'max:255'],
             'url' => ['required', 'url', new PlayerUrl()],
+            'category_id' => ['required', 'exists:categories,id'], // Validation de l'ID de la catégorie
         ]);
 
         DB::beginTransaction();
 
-        // Set track title, artist and url
+        // Création du track avec les données validées
         $track = new Track($validated);
 
-        // Set track's user + week
+        // Association du track avec l'utilisateur et la semaine actuels
         $track->user()->associate($request->user());
         $track->week()->associate(Week::current());
 
+        // Association de la catégorie au track
+        $track->category_id = $validated['category_id'];
+
         try {
-            // Fetch track detail from provider (YT, SC)
+            // Récupérer les détails du track depuis le fournisseur (ex: YouTube, SoundCloud)
             $details = $player->details($track->url);
 
-            // Set player_id, track_id and thumbnail_url
+            // Définition des détails du track
             $track->player = $details->player_id;
             $track->player_track_id = $details->track_id;
             $track->player_thumbnail_url = $details->thumbnail_url;
 
-            // Publish track
+            // Enregistrement du track
             $track->save();
 
             DB::commit();
@@ -86,6 +93,7 @@ class TrackController extends Controller
             'track' => $track,
         ]);
     }
+
 
     /**
      * Toggle like.

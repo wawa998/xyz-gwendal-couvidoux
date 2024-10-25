@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoriesController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\WeekController;
@@ -37,6 +38,9 @@ Route::middleware('auth')->group(function () {
     // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('app.profile.edit');
     Route::post('/profile', [ProfileController::class, 'update'])->name('app.profile.update');
+
+    Route::get('/categories', [CategoriesController::class, 'show'])->name('app.categories.show');
+
 
     Route::fallback(fn () => abort(404));
 });

@@ -30,7 +30,19 @@
                     <label for="url">Lien d'écoute</label>
                     <input name="url" id="url" class="w-medium" type="text" value="{{ old('url') }}" placeholder="lien youtube ou soundcloud" autocomplete="off">
                 </div>
+                <div>
+                    <label for="category_id">Catégorie</label>
+                    <select name="category_id" id="category_id">
+                        <option value="" selected disabled>Sélectionner une catégorie</option>
+                        @foreach ($categories as $category)
+                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
 
+                @error('category_id')
+                <p class="error-message">{{ $message }}</p>
+                @enderror
                 @error('url')
                 <p class="error-message">{{ $message }}</p>
                 @enderror

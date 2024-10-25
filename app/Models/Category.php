@@ -19,5 +19,18 @@ class Category extends Model
         return $this->hasMany(Track::class);
     }
 
+    /**
+     * Récupère toutes les catégories.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public static function getAllCategories()
+    {
+        return self::all();
+    }
 
+    public static function findById(int $id): ?Category
+    {
+        return self::find($id);
+    }
 }
