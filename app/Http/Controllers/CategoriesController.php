@@ -9,14 +9,16 @@ use Illuminate\Contracts\View\View;
 
 class CategoriesController extends Controller
 {
-    /**
-     * Terms form.
-     */
-    public function show(int $id): View
+
+    public function show(string $category): View
     {
+        $categoryModel = Category::findById((int) $category);
+
+        $tracks = Track::where('category_id', (int) $category)->paginate(10);
+
         return view('app.categories.show', [
-            'category'=>Category::findById($id),
-            'tracks'=>Track::getTracksByCategoryId($id)
+            'category' => $categoryModel,
+            'tracks' => $tracks,
         ]);
     }
 

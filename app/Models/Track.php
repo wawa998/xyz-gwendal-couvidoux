@@ -21,7 +21,7 @@ class Track extends Model
         'title',
         'artist',
         'url',
-        '$category_id'
+        'category_id'
     ];
 
     /**

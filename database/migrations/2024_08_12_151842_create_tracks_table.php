@@ -18,7 +18,7 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Week::class)->constrained('weeks')->onDelete('cascade');
             $table->foreignIdFor(User::class, 'user_id')->nullable()->constrained('users')->onDelete('set null');
-            $table->foreignIdFor(Category::class)->nullable()->constrained('categories')->onDelete('set null'); // Ajout de category_id
+            $table->foreignIdFor(Category::class, 'category_id')->nullable()->constrained('categories')->onDelete('set null'); // Ajout de category_id
             $table->string('artist');
             $table->string('title');
             $table->string('url');
