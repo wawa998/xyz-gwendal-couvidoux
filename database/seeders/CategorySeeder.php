@@ -23,7 +23,10 @@ class CategorySeeder extends Seeder
             'Reggae / Dub',
             'Techno',
             'Electro',
-            'inde'
+            'Indépendant',
+            'Vtuber',
+            'Cover',
+            'Lofy'
         ];
 
         foreach ($categories as $category){

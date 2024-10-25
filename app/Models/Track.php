@@ -75,8 +75,4 @@ class Track extends Model
             ->orderBy('created_at', 'asc');
     }
 
-    public static function getTracksByCategoryId(int $categoryId)
-    {
-        return self::where('category_id', $categoryId)->get();
-    }
 }
