@@ -12,11 +12,18 @@ class CategoriesController extends Controller
     /**
      * Terms form.
      */
-    public function show(Category $category): View
+    public function show(int $id): View
     {
         return view('app.categories.show', [
-            'category'=>$category,
-            'tracks'=>Track::getTracksByCategoryId($category->id)
+            'category'=>Category::findById($id),
+            'tracks'=>Track::getTracksByCategoryId($id)
+        ]);
+    }
+
+    public function index(): View
+    {
+        return view('app.categories.index', [
+            'categories'=>Category::getAllCategories(),
         ]);
     }
 }
